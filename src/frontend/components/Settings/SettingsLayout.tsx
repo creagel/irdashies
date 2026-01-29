@@ -7,6 +7,7 @@ import {
 import { Link, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { StandingsSettings } from './sections/StandingsSettings';
 import { RelativeSettings } from './sections/RelativeSettings';
+import { TwitchChatSettings } from './sections/TwitchChatSettings';
 import { WeatherSettings } from './sections/WeatherSettings';
 import { TrackMapSettings } from './sections/TrackMapSettings';
 import { FlatTrackMapSettings } from './sections/FlatTrackMapSettings';
@@ -195,6 +196,11 @@ export const SettingsLayout = () => {
               </Link>
             </li>
             <li>
+              <Link to="/settings/twitchchat" className={menuItemClass('/twitchchat')}>
+                Twitch Chat
+              </Link>
+            </li>
+            <li>
               <Link
                 to="/settings/weather"
                 className={menuItemClass('/weather')}
@@ -231,6 +237,7 @@ export const SettingsLayout = () => {
             <Route path="general" element={<GeneralSettings />} />
             <Route path="standings" element={<StandingsSettings />} />
             <Route path="relative" element={<RelativeSettings />} />
+            <Route path="twitchchat" element={<TwitchChatSettings />} />
             <Route path="weather" element={<WeatherSettings />} />
             <Route path="fuel" element={<FuelSettings />} />
             <Route path="map" element={<TrackMapSettings />} />

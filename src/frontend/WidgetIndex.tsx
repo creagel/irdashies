@@ -11,7 +11,8 @@ import { GarageCover } from './components/GarageCover/GarageCover';
 import { RejoinIndicator } from './components/RejoinIndicator/RejoinIndicator';
 import { TelemetryInspector } from './components/TelemetryInspector/TelemetryInspector';
 import { PitlaneHelper } from './components/PitlaneHelper/PitlaneHelper';
-import { Flag } from './components/Flag';  
+import { Flag } from './components/Flag';
+import { TwitchChat } from './components/TwitchChat/TwitchChat';
 
 // TODO: type this better, right now the config comes from settings
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,6 +30,7 @@ export const WIDGET_MAP: Record<string, (config?: any) => React.JSX.Element | nu
   rejoin: RejoinIndicator,
   telemetryinspector: TelemetryInspector,
   pitlanehelper: PitlaneHelper,
+  twitchchat: TwitchChat,
   flag: Flag,
 };
 
