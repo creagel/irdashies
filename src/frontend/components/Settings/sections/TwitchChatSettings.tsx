@@ -28,6 +28,7 @@ export const TwitchChatSettings = () => {
     (w) => w.id === SETTING_ID
   ) as TwitchChatWidgetSettings | undefined;
   const [settings, setSettings] = useState<TwitchChatWidgetSettings>({
+    alwaysEnabled: true,
     enabled: savedSettings?.enabled ?? false,
     config: migrateConfig(savedSettings?.config),
   });

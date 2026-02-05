@@ -17,6 +17,8 @@ export interface DashboardWidget {
   id: string;
   /** Show/hide widget */
   enabled: boolean;
+  /** Show widget when iRacing is not running? */
+  alwaysEnabled: boolean;
   /** The layout of the window for the widget on the dashboard. */
   layout: WidgetLayout;
   /** Configuration for the widget. */

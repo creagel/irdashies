@@ -1,4 +1,5 @@
 export interface BaseWidgetSettings<T = Record<string, unknown>> {
+  alwaysEnabled: boolean;
   enabled: boolean;
   config: T;
 }

@@ -34,7 +34,7 @@ const AppRoutes = () => {
           <Route
             key={widget.id}
             path={`/${widget.id}`}
-            element={running ? <WidgetComponent {...widget.config} /> : <></>}
+            element={(running || widget.alwaysEnabled) ? <WidgetComponent {...widget.config} /> : <></>}
           />
         );
       })}

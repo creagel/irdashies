@@ -4,6 +4,7 @@ import type {
 } from '../../Settings/types';
 
 const DEFAULT_CONFIG: TwitchChatWidgetSettings = {
+  alwaysEnabled: true,
   enabled: false,
   config: {
     channel: '',
@@ -24,6 +25,7 @@ export const useTwitchChatSettings = () => {
   if (saved && typeof saved === 'object') {
     // Merge saved config with defaults to support older dashboards missing keys
     return {
+      alwaysEnabled: true,
       enabled: saved.enabled ?? DEFAULT_CONFIG.enabled,
       config: {
         background: {opacity: saved.config.background.opacity ?? 0.3},

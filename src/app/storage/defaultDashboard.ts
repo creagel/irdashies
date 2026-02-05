@@ -4,6 +4,7 @@ export const defaultDashboard: DashboardLayout = {
   widgets: [
     {
       id: 'standings',
+      alwaysEnabled: false,
       enabled: true,
       layout: {
         x: 6,
@@ -232,6 +233,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'input',
+      alwaysEnabled: false,
       enabled: true,
       layout: {
         x: 622,
@@ -288,6 +290,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'relative',
+      alwaysEnabled: false,
       enabled: true,
       layout: {
         x: 7,
@@ -482,6 +485,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'map',
+      alwaysEnabled: false,
       enabled: true,
       layout: {
         x: 1102,
@@ -510,6 +514,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'flatmap',
+      alwaysEnabled: false,
       enabled: false,
       layout: {
         x: 622,
@@ -538,6 +543,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'weather',
+      alwaysEnabled: false,
       enabled: true,
       layout: {
         x: 1334,
@@ -587,6 +593,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'fastercarsfrombehind',
+      alwaysEnabled: false,
       enabled: true,
       layout: {
         x: 588,
@@ -607,6 +614,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'fuel',
+      alwaysEnabled: false,
       enabled: false,
       layout: {
         x: 1102,
@@ -644,6 +652,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'blindspotmonitor',
+      alwaysEnabled: false,
       enabled: false,
       layout: {
         x: 378,
@@ -669,6 +678,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'garagecover',
+      alwaysEnabled: false,
       enabled: false,
       layout: {
         x: 50,
@@ -682,6 +692,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: "twitchchat",
+      alwaysEnabled: true,
       enabled: false,
       layout: {
         x: 378,
@@ -696,6 +707,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'rejoin',
+      alwaysEnabled: false,
       enabled: false,
       layout: {
         x: 378,
@@ -720,6 +732,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'telemetryinspector',
+      alwaysEnabled: false,
       enabled: false,
       layout: {
         x: 50,
@@ -739,6 +752,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'pitlanehelper',
+      alwaysEnabled: false,
       enabled: false,
       layout: {
         x: 100,
