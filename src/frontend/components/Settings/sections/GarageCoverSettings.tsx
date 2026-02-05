@@ -14,6 +14,7 @@ const defaultConfig: GarageCoverWidgetSettings['config'] = {
 export const GarageCoverSettings = () => {
     const { currentDashboard, bridge } = useDashboard();
     const [settings, setSettings] = useState<GarageCoverWidgetSettings>({
+        alwaysEnabled: false,
         enabled:
             currentDashboard?.widgets.find((w) => w.id === SETTING_ID)?.enabled ?? false,
         config:
@@ -60,6 +61,7 @@ export const GarageCoverSettings = () => {
         if (!widget) return;
 
         const newSettings = {
+            alwaysEnabled: false,
             enabled: widget.enabled ?? false,
             config: (widget.config as GarageCoverWidgetSettings['config']) || defaultConfig,
         };
