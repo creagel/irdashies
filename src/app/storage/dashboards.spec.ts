@@ -127,6 +127,7 @@ describe('dashboards', () => {
       const updatedWidget = {
         id: 'input',
         enabled: true,
+        alwaysEnabled: false,
         layout: { x: 100, y: 100, width: 600, height: 120 },
       };
 
@@ -139,11 +140,13 @@ describe('dashboards', () => {
       const existingWidget = {
         id: 'input',
         enabled: true,
+        alwaysEnabled: false,
         layout: { x: 0, y: 0, width: 300, height: 100 },
       };
       const updatedWidget = {
         id: 'input',
         enabled: false,
+        alwaysEnabled: false,
         layout: { x: 100, y: 100, width: 600, height: 120 },
       };
       const existingDashboard: DashboardLayout = { widgets: [existingWidget], generalSettings: { fontSize: 'sm' } };
@@ -162,11 +165,13 @@ describe('dashboards', () => {
       const existingWidget = {
         id: 'input',
         enabled: true,
+        alwaysEnabled: false,
         layout: { x: 0, y: 0, width: 300, height: 100 },
       };
       const updatedWidget = {
         id: 'input',
         enabled: true,
+        alwaysEnabled: false,
         layout: { x: 100, y: 100, width: 600, height: 120 },
       };
       const existingDashboard: DashboardLayout = { widgets: [existingWidget], generalSettings: { fontSize: 'sm' } };
@@ -185,6 +190,7 @@ describe('dashboards', () => {
       const updatedWidget = {
         id: 'input',
         enabled: true,
+        alwaysEnabled: false,
         layout: { x: 100, y: 100, width: 600, height: 120 },
       };
       const existingDashboard: DashboardLayout = { widgets: [], generalSettings: { fontSize: 'sm' } };
