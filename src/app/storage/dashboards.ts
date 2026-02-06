@@ -8,6 +8,37 @@ import { app } from 'electron';
 
 const DASHBOARDS_KEY = 'dashboards';
 
+/**
+ * Merges existing widgets with default widgets to ensure all new keys are present.
+ * If a widget in the dashboard is missing keys that exist in the default widget,
+ * those keys are added from the default widget.
+ */
+const mergeWidgetsWithDefaults = (dashboard: DashboardLayout): DashboardLayout => {
+  return {
+    ...dashboard,
+    widgets: dashboard.widgets.map((widget) => {
+      const defaultWidget = defaultDashboard.widgets.find((w) => w.id === widget.id);
+      if (!defaultWidget) {
+        return widget;
+      }
+
+      // Get all keys from default widget and add any missing ones to the current widget
+      const mergedWidget: DashboardWidget = { ...defaultWidget, ...widget };
+
+      // Ensure layout and config are properly merged
+      if (widget.layout) {
+        mergedWidget.layout = { ...defaultWidget.layout, ...widget.layout };
+      }
+
+      if (widget.config && defaultWidget.config) {
+        mergedWidget.config = { ...defaultWidget.config, ...widget.config };
+      }
+
+      return mergedWidget;
+    }),
+  };
+};
+
 const isDashboardChanged = (oldDashboard: DashboardLayout | undefined, newDashboard: DashboardLayout): boolean => {
   if (!oldDashboard) return true;
 
@@ -102,7 +133,7 @@ export const saveDashboard = (
   const existingDashboard = dashboards[id];
 
   // Merge the existing dashboard with the new value to preserve structure
-  const mergedDashboard: DashboardLayout = {
+  let mergedDashboard: DashboardLayout = {
     ...existingDashboard,
     ...value,
     widgets: value.widgets || existingDashboard?.widgets || [],
@@ -111,6 +142,9 @@ export const saveDashboard = (
       ...value.generalSettings,
     }
   };
+
+  // Ensure all widgets have the required keys from the default dashboard
+  mergedDashboard = mergeWidgetsWithDefaults(mergedDashboard);
 
   // Only save and emit if there are actual changes
   if (isDashboardChanged(existingDashboard, mergedDashboard)) {
