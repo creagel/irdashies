@@ -44,6 +44,7 @@ export const TrackMapSettings = () => {
   const { currentDashboard } = useDashboard();
   const savedSettings = currentDashboard?.widgets.find(w => w.id === SETTING_ID) as TrackMapWidgetSettings | undefined;
   const [settings, setSettings] = useState<TrackMapWidgetSettings>({
+    alwaysEnabled: false,
     enabled: currentDashboard?.widgets.find(w => w.id === SETTING_ID)?.enabled ?? false,
     config: migrateConfig(savedSettings?.config)
   });

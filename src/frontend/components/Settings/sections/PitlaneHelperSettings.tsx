@@ -40,6 +40,7 @@ export const PitlaneHelperSettings = () => {
   } : defaultConfig;
 
   const [settings, setSettings] = useState<PitlaneHelperWidgetSettings>({
+    alwaysEnabled: false,
     enabled: savedSettings?.enabled ?? false,
     config: migratedConfig,
   });

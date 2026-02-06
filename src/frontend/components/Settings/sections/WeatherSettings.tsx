@@ -127,6 +127,7 @@ export const WeatherSettings = () => {
     (w) => w.id === SETTING_ID
   ) as WeatherWidgetSettings | undefined;
   const [settings, setSettings] = useState<WeatherWidgetSettings>({
+    alwaysEnabled: false,
     enabled: savedSettings?.enabled ?? false,
     config: migrateConfig(savedSettings?.config),
   });

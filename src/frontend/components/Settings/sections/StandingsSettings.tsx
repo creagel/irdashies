@@ -548,6 +548,7 @@ export const StandingsSettings = () => {
   const { currentDashboard } = useDashboard();
   const savedSettings = currentDashboard?.widgets.find(w => w.id === SETTING_ID) as StandingsWidgetSettings | undefined;
   const [settings, setSettings] = useState<StandingsWidgetSettings>({
+    alwaysEnabled: false,
     enabled: savedSettings?.enabled ?? false,
     config: migrateConfig(savedSettings?.config),
   });

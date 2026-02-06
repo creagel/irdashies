@@ -67,6 +67,7 @@ const migrateConfig = (
 export const FasterCarsFromBehindSettings = () => {
   const { currentDashboard } = useDashboard();
   const [settings, setSettings] = useState<FasterCarsFromBehindWidgetSettings>({
+    alwaysEnabled: false,
     enabled:
       currentDashboard?.widgets.find((w) => w.id === SETTING_ID)?.enabled ??
       false,

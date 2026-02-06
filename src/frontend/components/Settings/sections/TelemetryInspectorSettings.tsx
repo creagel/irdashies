@@ -17,6 +17,7 @@ interface TelemetryInspectorConfig {
 }
 
 interface TelemetryInspectorWidgetSettings {
+  alwaysEnabled: boolean;
   enabled: boolean;
   config: TelemetryInspectorConfig;
 }
@@ -89,6 +90,7 @@ export const TelemetryInspectorSettings = () => {
     (w) => w.id === SETTING_ID
   ) as TelemetryInspectorWidgetSettings | undefined;
   const [settings, setSettings] = useState<TelemetryInspectorWidgetSettings>({
+    alwaysEnabled: false,
     enabled: savedSettings?.enabled ?? false,
     config: migrateConfig(savedSettings?.config),
   });

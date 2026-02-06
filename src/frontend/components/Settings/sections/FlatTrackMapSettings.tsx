@@ -42,6 +42,7 @@ export const FlatTrackMapSettings = () => {
   const { currentDashboard } = useDashboard();
   const savedSettings = currentDashboard?.widgets.find((w) => w.id === SETTING_ID) as FlatTrackMapWidgetSettings | undefined;
   const [settings, setSettings] = useState<FlatTrackMapWidgetSettings>({
+    alwaysEnabled: false,
     enabled:
       currentDashboard?.widgets.find((w) => w.id === SETTING_ID)?.enabled ??
       false,

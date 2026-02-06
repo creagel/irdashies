@@ -57,6 +57,7 @@ export const BlindSpotMonitorSettings = () => {
     (w) => w.id === SETTING_ID
   ) as BlindSpotMonitorWidgetSettings | undefined;
   const [settings, setSettings] = useState<BlindSpotMonitorWidgetSettings>({
+    alwaysEnabled: false,
     enabled: savedSettings?.enabled ?? false,
     config: migrateConfig(savedSettings?.config),
   });

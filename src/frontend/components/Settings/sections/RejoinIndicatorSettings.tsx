@@ -43,6 +43,7 @@ export const RejoinIndicatorSettings = () => {
     (w) => w.id === SETTING_ID
   ) as RejoinIndicatorWidgetSettings | undefined;
   const [settings, setSettings] = useState<RejoinIndicatorWidgetSettings>({
+    alwaysEnabled: false,
     enabled: savedSettings?.enabled ?? false,
     config: migrateConfig(savedSettings?.config),
   });

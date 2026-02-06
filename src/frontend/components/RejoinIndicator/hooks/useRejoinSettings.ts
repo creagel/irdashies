@@ -2,6 +2,7 @@ import { useDashboard } from '@irdashies/context';
 import type { RejoinIndicatorWidgetSettings } from '../../Settings/types';
 
 const DEFAULT_CONFIG: RejoinIndicatorWidgetSettings = {
+  alwaysEnabled: false,
   enabled: false,
   config: {
     showAtSpeed: 30,
