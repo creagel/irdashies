@@ -77,7 +77,7 @@ export const TwitchChatSettings = () => {
             </label>
             <input
               type="range"
-              min="2"
+              min="8"
               max="45"
               step="1"
               value={settings.config.fontSize ?? 16}
