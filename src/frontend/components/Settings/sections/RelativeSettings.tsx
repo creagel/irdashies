@@ -478,6 +478,7 @@ export const RelativeSettings = () => {
   ) as RelativeWidgetSettings | undefined;
   const [settings, setSettings] = useState<RelativeWidgetSettings>({
     enabled: savedSettings?.enabled ?? true,
+    alwaysEnabled: savedSettings?.alwaysEnabled ?? false,
     config: migrateConfig(savedSettings?.config),
   });
   const [itemsOrder, setItemsOrder] = useState(settings.config.displayOrder);

@@ -636,6 +636,7 @@ export const InputSettings = () => {
   ) as InputWidgetSettings | undefined;
   const [settings, setSettings] = useState<InputWidgetSettings>({
     enabled: savedSettings?.enabled ?? false,
+    alwaysEnabled: savedSettings?.alwaysEnabled ?? false,
     config: migrateConfig(savedSettings?.config),
   });
   const [itemsOrder, setItemsOrder] = useState(settings.config.displayOrder);

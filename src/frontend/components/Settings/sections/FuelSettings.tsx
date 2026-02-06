@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BaseSettingsSection } from '../components/BaseSettingsSection';
-import { FuelWidgetSettings, SessionVisibilitySettings } from '../types';
+import { FuelWidgetSettings, SessionVisibilitySettings, SteerWidgetSettings } from '../types';
 import { useDashboard } from '@irdashies/context';
 import { SessionVisibility } from '../components/SessionVisibility';
 import { ToggleSwitch } from '../components/ToggleSwitch';
@@ -78,6 +78,7 @@ export const FuelSettings = () => {
   ) as FuelWidgetSettings | undefined;
   const [settings, setSettings] = useState<FuelWidgetSettings>({
     enabled: savedSettings?.enabled ?? false,
+    alwaysEnabled: savedSettings?.alwaysEnabled ?? false,
     config: migrateConfig(savedSettings?.config),
   });
 
@@ -86,6 +87,7 @@ export const FuelSettings = () => {
     if (savedSettings) {
       setSettings({
         enabled: savedSettings.enabled,
+        alwaysEnabled: savedSettings.alwaysEnabled ?? false,
         config: migrateConfig(savedSettings.config),
       });
     }

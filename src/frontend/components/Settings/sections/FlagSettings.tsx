@@ -59,6 +59,7 @@ export const FlagSettings = () => {
   const [settings, setSettings] = useState<FlagWidgetSettings>({
     id: SETTING_ID,
     enabled: savedSettings?.enabled ?? true,
+    alwaysEnabled: savedSettings?.alwaysEnabled ?? false,
     config: migrateConfig(savedSettings?.config),
   });
 
