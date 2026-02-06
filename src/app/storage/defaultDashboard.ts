@@ -207,6 +207,7 @@ export const defaultDashboard: DashboardLayout = {
     },
     {
       id: 'flag',
+      alwaysEnabled: false,
       enabled: false,
       layout: {
         x: 100,
