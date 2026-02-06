@@ -7,6 +7,7 @@ const DEFAULT_CONFIG: TwitchChatWidgetSettings = {
   alwaysEnabled: true,
   enabled: false,
   config: {
+    fontSize: 12,
     channel: '',
     oAuthKey: '',
     background: {
@@ -29,6 +30,8 @@ export const useTwitchChatSettings = () => {
       enabled: saved.enabled ?? DEFAULT_CONFIG.enabled,
       config: {
         background: {opacity: saved.config.background.opacity ?? 0.3},
+        fontSize: (saved.config as TwitchChatWidgetSettings['config'])
+          ?.fontSize ?? DEFAULT_CONFIG.config.fontSize,
         channel:
           (saved.config as TwitchChatWidgetSettings['config'])
             ?.channel ?? DEFAULT_CONFIG.config.channel,

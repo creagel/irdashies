@@ -221,6 +221,7 @@ export interface RelativeWidgetSettings extends BaseWidgetSettings {
 
 export interface TwitchChatWidgetSettings extends BaseWidgetSettings {
   config: {
+    fontSize: number;
     channel: string;
     oAuthKey: string;
     background: { opacity: number };

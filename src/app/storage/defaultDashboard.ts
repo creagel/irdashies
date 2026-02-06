@@ -701,6 +701,7 @@ export const defaultDashboard: DashboardLayout = {
         height: 500
       },
       config: {
+        fontSize: 16,
         channel: '',
         oAuthKey: ''
       }

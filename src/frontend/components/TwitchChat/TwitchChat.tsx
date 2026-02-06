@@ -28,8 +28,8 @@ export const TwitchChat = ({
 
       {/*there will be message from chat*/}
       {messages.map((m) => (
-        <div key={m.id} style={{ marginBottom: 8 }}>
-          <strong style={{ color: "#a970ff" }}>{m.user}</strong>: {m.text}
+        <div key={m.id} style={{ marginBottom: 8, fontSize: `${settings?.config.fontSize}px`  }}>
+          <strong style={{ color: "#a970ff"}}>{m.user}</strong>: {m.text}
         </div>
       ))}
     </div>

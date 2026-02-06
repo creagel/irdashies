@@ -6,6 +6,7 @@ import { useDashboard } from '@irdashies/context';
 const SETTING_ID = 'twitchchat';
 
 const defaultConfig: TwitchChatWidgetSettings['config'] = {
+  fontSize: 12,
   background: { opacity: 30 },
   channel: '',
   oAuthKey: '',
@@ -16,6 +17,7 @@ const migrateConfig = (savedConfig: unknown): TwitchChatWidgetSettings['config']
   const config = savedConfig as Record<string, unknown>;
 
   return {
+    fontSize: (config.fontSize as number) ?? defaultConfig.fontSize,
     background: { opacity: (config.background as { opacity?: number })?.opacity ?? defaultConfig.background.opacity },
     channel: (config.channel as string) ?? defaultConfig.channel,
     oAuthKey: (config.oAuthKey as string) ?? defaultConfig.oAuthKey,
@@ -62,6 +64,26 @@ export const TwitchChatSettings = () => {
               onChange={(e) =>
                 handleConfigChange({
                   background: { opacity: parseInt(e.target.value) },
+                })
+              }
+              className="w-full"
+            />
+          </div>
+
+          {/* Font size */}
+          <div className="space-y-2">
+            <label className="text-slate-300">
+              Font size: {settings.config.fontSize ?? 16}px
+            </label>
+            <input
+              type="range"
+              min="2"
+              max="45"
+              step="1"
+              value={settings.config.fontSize ?? 16}
+              onChange={(e) =>
+                handleConfigChange({
+                  fontSize: parseInt(e.target.value),
                 })
               }
               className="w-full"
