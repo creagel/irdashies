@@ -20,7 +20,7 @@ const mockBridge: DashboardBridge = {
   getGarageCoverImageAsDataUrl: vi.fn(),
   getAnalyticsOptOut: vi.fn().mockResolvedValue(false),
   setAnalyticsOptOut: vi.fn(),
-  setAutoStart: vi.fn()
+  setAutoStart: vi.fn(),
 };
 
 const TestComponent: React.FC = () => {
@@ -73,15 +73,19 @@ describe('DashboardContext', () => {
 
     screen.getByText('Update Dashboard').click();
 
-    expect(mockBridge.saveDashboard).toHaveBeenCalledWith({
-      widgets: [
-        {
-          id: 'test',
-          enabled: true,
-          layout: { x: 0, y: 0, width: 1, height: 1 },
-        },
-      ],
-    }, undefined);
+    expect(mockBridge.saveDashboard).toHaveBeenCalledWith(
+      {
+        widgets: [
+          {
+            id: 'test',
+            enabled: true,
+            alwaysEnabled: false,
+            layout: { x: 0, y: 0, width: 1, height: 1 },
+          },
+        ],
+      },
+      undefined
+    );
   });
 
   it('reloads the dashboard on mount', () => {

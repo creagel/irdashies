@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BaseSettingsSection } from '../components/BaseSettingsSection';
-import { FuelWidgetSettings, SessionVisibilitySettings, SteerWidgetSettings } from '../types';
+import { FuelWidgetSettings, SessionVisibilitySettings } from '../types';
 import { useDashboard } from '@irdashies/context';
 import { SessionVisibility } from '../components/SessionVisibility';
 import { ToggleSwitch } from '../components/ToggleSwitch';

@@ -272,7 +272,8 @@ export interface TrackMapWidgetSettings extends BaseWidgetSettings {
   };
 }
 
-export interface SteerWidgetSettings extends BaseWidgetSettings {
+export interface SteerWidgetSettings {
+  enabled: boolean;
   config: {
     style: 'formula' | 'lmp' | 'nascar' | 'ushape' | 'default';
     color: 'dark' | 'light';
