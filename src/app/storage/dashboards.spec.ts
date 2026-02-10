@@ -85,7 +85,10 @@ describe('dashboards', () => {
 
   describe('saveDashboard', () => {
     it('should save a new dashboard', () => {
-      const newDashboard: DashboardLayout = { widgets: [], generalSettings: { fontSize: 'sm' }};
+      const newDashboard: DashboardLayout = {
+        widgets: [],
+        generalSettings: { fontSize: 'sm' },
+      };
       mockReadData.mockReturnValue(null);
 
       saveDashboard('newDashboard', newDashboard);
@@ -95,29 +98,35 @@ describe('dashboards', () => {
       });
     });
 
-  it('should update an existing dashboard and preserve other dashboards', () => {
-    const customDashboard: DashboardLayout = { widgets: [], generalSettings: { fontSize: 'xl' }};
-    const existingDashboards = { 
-      default: defaultDashboard,
-      custom: customDashboard,
-    };
-    const updatedDashboard: DashboardLayout = { widgets: [], generalSettings: { fontSize: 'lg', colorPalette: 'black' }};
-    mockReadData.mockReturnValue(existingDashboards);
+    it('should update an existing dashboard and preserve other dashboards', () => {
+      const customDashboard: DashboardLayout = {
+        widgets: [],
+        generalSettings: { fontSize: 'xl' },
+      };
+      const existingDashboards = {
+        default: defaultDashboard,
+        custom: customDashboard,
+      };
+      const updatedDashboard: DashboardLayout = {
+        widgets: [],
+        generalSettings: { fontSize: 'lg', colorPalette: 'black' },
+      };
+      mockReadData.mockReturnValue(existingDashboards);
 
-    saveDashboard('default', updatedDashboard);
+      saveDashboard('default', updatedDashboard);
 
-    expect(mockWriteData).toHaveBeenCalledWith('dashboards', {
-      default: {
-        ...defaultDashboard,
-        ...updatedDashboard,
-        generalSettings: {
-          ...defaultDashboard.generalSettings,
-          ...updatedDashboard.generalSettings,
+      expect(mockWriteData).toHaveBeenCalledWith('dashboards', {
+        default: {
+          ...defaultDashboard,
+          ...updatedDashboard,
+          generalSettings: {
+            ...defaultDashboard.generalSettings,
+            ...updatedDashboard.generalSettings,
+          },
         },
-      },
-      custom: customDashboard,
+        custom: customDashboard,
+      });
     });
-  });
   });
 
   describe('updateDashboardWidget', () => {
@@ -138,18 +147,21 @@ describe('dashboards', () => {
 
     it('should update an existing widget in the default dashboard', () => {
       const existingWidget = {
-        id: 'input',
+        id: 'custom-test',
         enabled: true,
         alwaysEnabled: false,
         layout: { x: 0, y: 0, width: 300, height: 100 },
       };
       const updatedWidget = {
-        id: 'input',
+        id: 'custom-test',
         enabled: false,
         alwaysEnabled: false,
         layout: { x: 100, y: 100, width: 600, height: 120 },
       };
-      const existingDashboard: DashboardLayout = { widgets: [existingWidget], generalSettings: { fontSize: 'sm' } };
+      const existingDashboard: DashboardLayout = {
+        widgets: [existingWidget],
+        generalSettings: { fontSize: 'sm' },
+      };
       mockReadData.mockReturnValue({
         default: existingDashboard,
       });
@@ -157,24 +169,30 @@ describe('dashboards', () => {
       updateDashboardWidget(updatedWidget);
 
       expect(mockWriteData).toHaveBeenCalledWith('dashboards', {
-        default: { widgets: [updatedWidget], generalSettings: { fontSize: 'sm' } },
+        default: {
+          widgets: [updatedWidget],
+          generalSettings: { fontSize: 'sm' },
+        },
       });
     });
 
     it('should update an existing widget in a specific dashboard', () => {
       const existingWidget = {
-        id: 'input',
+        id: 'custom-test',
         enabled: true,
         alwaysEnabled: false,
         layout: { x: 0, y: 0, width: 300, height: 100 },
       };
       const updatedWidget = {
-        id: 'input',
+        id: 'custom-test',
         enabled: true,
         alwaysEnabled: false,
         layout: { x: 100, y: 100, width: 600, height: 120 },
       };
-      const existingDashboard: DashboardLayout = { widgets: [existingWidget], generalSettings: { fontSize: 'sm' } };
+      const existingDashboard: DashboardLayout = {
+        widgets: [existingWidget],
+        generalSettings: { fontSize: 'sm' },
+      };
       mockReadData.mockReturnValue({
         custom: existingDashboard,
       });
@@ -182,18 +200,24 @@ describe('dashboards', () => {
       updateDashboardWidget(updatedWidget, 'custom');
 
       expect(mockWriteData).toHaveBeenCalledWith('dashboards', {
-        custom: { widgets: [updatedWidget], generalSettings: { fontSize: 'sm' } },
+        custom: {
+          widgets: [updatedWidget],
+          generalSettings: { fontSize: 'sm' },
+        },
       });
     });
 
     it('should not update a widget if it does not exist in the dashboard', () => {
       const updatedWidget = {
-        id: 'input',
+        id: 'custom-test',
         enabled: true,
         alwaysEnabled: false,
         layout: { x: 100, y: 100, width: 600, height: 120 },
       };
-      const existingDashboard: DashboardLayout = { widgets: [], generalSettings: { fontSize: 'sm' } };
+      const existingDashboard: DashboardLayout = {
+        widgets: [],
+        generalSettings: { fontSize: 'sm' },
+      };
       mockReadData.mockReturnValue({
         default: existingDashboard,
       });
@@ -265,18 +289,26 @@ describe('dashboards', () => {
 
       const updatedDashboard = getOrCreateDefaultDashboard();
 
-      expect(updatedDashboard.generalSettings).toEqual(defaultDashboard.generalSettings);
+      expect(updatedDashboard.generalSettings).toEqual(
+        defaultDashboard.generalSettings
+      );
     });
 
     it('should preserve general settings from the existing dashboard', () => {
-      const dashboard: DashboardLayout = { widgets: [], generalSettings: { fontSize: 'lg' } };
+      const dashboard: DashboardLayout = {
+        widgets: [],
+        generalSettings: { fontSize: 'lg' },
+      };
       mockReadData.mockReturnValue({
         default: dashboard,
       });
-      
+
       const updatedDashboard = getOrCreateDefaultDashboard();
 
-      expect(updatedDashboard.generalSettings).toEqual({ ...defaultDashboard.generalSettings, fontSize: 'lg' });
+      expect(updatedDashboard.generalSettings).toEqual({
+        ...defaultDashboard.generalSettings,
+        fontSize: 'lg',
+      });
     });
   });
 
@@ -285,14 +317,20 @@ describe('dashboards', () => {
       const mapWidget = defaultDashboard.widgets.find((w) => w.id === 'map');
 
       expect(mapWidget).toBeDefined();
-      expect((mapWidget?.config as Record<string, unknown>)?.showOnlyWhenOnTrack).toBe(false);
+      expect(
+        (mapWidget?.config as Record<string, unknown>)?.showOnlyWhenOnTrack
+      ).toBe(false);
     });
 
     it('should have showOnlyWhenOnTrack property in Flat Track Map widget', () => {
-      const flatMapWidget = defaultDashboard.widgets.find((w) => w.id === 'flatmap');
+      const flatMapWidget = defaultDashboard.widgets.find(
+        (w) => w.id === 'flatmap'
+      );
 
       expect(flatMapWidget).toBeDefined();
-      expect((flatMapWidget?.config as Record<string, unknown>)?.showOnlyWhenOnTrack).toBe(false);
+      expect(
+        (flatMapWidget?.config as Record<string, unknown>)?.showOnlyWhenOnTrack
+      ).toBe(false);
     });
   });
 });
