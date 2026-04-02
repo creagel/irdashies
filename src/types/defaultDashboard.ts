@@ -216,6 +216,7 @@ export const defaultDashboard: {
           ],
         },
         showOnlyWhenOnTrack: false,
+        pushToPass: { enabled: false },
         displayOrder: [
           'position',
           'carNumber',
@@ -233,6 +234,7 @@ export const defaultDashboard: {
           'lastTime',
           'compound',
           'lapTimeDeltas',
+          'pushToPass',
         ],
         driverTag: { enabled: false },
         sessionVisibility: {
@@ -426,6 +428,7 @@ export const defaultDashboard: {
         compound: {
           enabled: false,
         },
+        pushToPass: { enabled: false },
         displayOrder: [
           'position',
           'carNumber',
@@ -441,6 +444,7 @@ export const defaultDashboard: {
           'fastestTime',
           'lastTime',
           'compound',
+          'pushToPass',
         ],
         driverTag: { enabled: false },
         titleBar: {
@@ -596,7 +600,7 @@ export const defaultDashboard: {
           labelFontSize: 100,
         },
         showCarNumbers: true,
-        invertTrackColors: false,        
+        invertTrackColors: false,
         driverCircleSize: 40,
         playerCircleSize: 40,
         trackmapFontSize: 100,

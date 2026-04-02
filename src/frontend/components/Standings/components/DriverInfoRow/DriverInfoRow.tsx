@@ -5,6 +5,7 @@ import {
   usePitStopDuration,
   usePitLaneStore,
   useDashboard,
+  type P2PDisplayState,
 } from '@irdashies/context';
 import type { ResolvedDriverTag } from '../../hooks/useDriverTagMap';
 import type { Gap, LastTimeState } from '../../createStandings';
@@ -26,6 +27,7 @@ import { LapTimeDeltasCell } from './cells/LapTimeDeltasCell';
 import { PositionChangeCell } from './cells/PositionChangeCell';
 import { LastTimeCell } from './cells/LastTimeCell';
 import { PitStatusCell } from './cells/PitStatusCell';
+import { PushToPassCell } from './cells/PushToPassCell';
 import { PositionCell } from './cells/PositionCell';
 import { TeamNameCell } from './cells/TeamNameCell';
 
@@ -79,6 +81,7 @@ interface DriverRowInfoProps {
   resolvedTag?: ResolvedDriverTag;
   hasAnyDriverTag?: boolean;
   compactMode?: string;
+  p2pDisplayState?: P2PDisplayState;
 }
 
 // Helper function to provide dummy data for hidden rows
@@ -194,6 +197,7 @@ export const DriverInfoRow = memo((props: DriverRowInfoProps) => {
     resolvedTag,
     hasAnyDriverTag,
     compactMode,
+    p2pDisplayState,
   } = displayProps;
   const pitStopDurations = usePitStopDuration();
   const pitStopDuration =
@@ -552,6 +556,13 @@ export const DriverInfoRow = memo((props: DriverRowInfoProps) => {
           />
         ),
       },
+      {
+        id: 'pushToPass',
+        shouldRender:
+          (displayOrder ? displayOrder.includes('pushToPass') : false) &&
+          (config?.pushToPass?.enabled ?? false),
+        component: <PushToPassCell key="pushToPass" state={p2pDisplayState} />,
+      },
     ];
 
     if (displayOrder) {
@@ -622,6 +633,7 @@ export const DriverInfoRow = memo((props: DriverRowInfoProps) => {
     numberBackground,
     numberBorder,
     compactMode,
+    p2pDisplayState,
   ]);
 
   return (

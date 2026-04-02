@@ -7,6 +7,8 @@ import {
   useSessionVisibility,
   useGeneralSettings,
   usePitLapStoreUpdater,
+  usePushToPassStoreUpdater,
+  useP2PDisplayStates,
 } from '@irdashies/context';
 import {
   useRelativeSettings,
@@ -32,6 +34,8 @@ export const Relative = () => {
   const isSessionVisible = useSessionVisibility(settings?.sessionVisibility);
 
   usePitLapStoreUpdater();
+  usePushToPassStoreUpdater();
+  const p2pDisplayStates = useP2PDisplayStates();
 
   const isSingleMake = useIsSingleMake();
   const hideCarManufacturer = !!(
@@ -221,6 +225,7 @@ export const Relative = () => {
           deltaDecimalPlaces={settings?.delta?.precision}
           hideCarManufacturer={hideCarManufacturer}
           compactMode={generalSettings?.compactMode}
+          p2pDisplayState={p2pDisplayStates[result.carIdx]}
         />
       );
     });
@@ -232,6 +237,7 @@ export const Relative = () => {
     isMultiClass,
     highlightColor,
     hideCarManufacturer,
+    p2pDisplayStates,
     isTeamRacing,
     tagMap,
     hasAnyTag,

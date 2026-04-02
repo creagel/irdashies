@@ -15,6 +15,8 @@ import {
   useGeneralSettings,
   useLapTimesStoreUpdater,
   usePitLapStoreUpdater,
+  usePushToPassStoreUpdater,
+  useP2PDisplayStates,
   useDrivingState,
   useWeekendInfoNumCarClasses,
   useWeekendInfoTeamRacing,
@@ -33,6 +35,10 @@ export const Standings = () => {
 
   // Update pit laps
   usePitLapStoreUpdater();
+
+  // Update Push to Pass store
+  usePushToPassStoreUpdater();
+  const p2pDisplayStates = useP2PDisplayStates();
 
   const standings = useDriverStandings(settings);
   const classStats = useCarClassStats();
@@ -233,6 +239,7 @@ export const Standings = () => {
                         slowdown={result.slowdown}
                         hideCarManufacturer={hideCarManufacturer}
                         compactMode={generalSettings?.compactMode}
+                        p2pDisplayState={p2pDisplayStates[result.carIdx]}
                       />
                     </Fragment>
                   );

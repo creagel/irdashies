@@ -63,6 +63,7 @@ const sortableSettings: SortableSetting[] = [
   { id: 'fastestTime', label: 'Best Time', configKey: 'fastestTime' },
   { id: 'lastTime', label: 'Last Time', configKey: 'lastTime' },
   { id: 'compound', label: 'Tire Compound', configKey: 'compound' },
+  { id: 'pushToPass', label: 'Push to Pass', configKey: 'pushToPass' },
 ];
 
 const defaultConfig = getWidgetDefaultConfig('relative');

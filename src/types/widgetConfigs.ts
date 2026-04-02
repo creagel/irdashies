@@ -153,6 +153,7 @@ export interface StandingsConfig {
   driverName: DriverNameConfig;
   teamName: { enabled: boolean };
   pitStatus: PitStatusConfig;
+  pushToPass: { enabled: boolean };
   driverTag: { enabled: boolean; widthPx?: number };
   displayOrder: string[];
   sessionVisibility: SessionVisibilitySettings;
@@ -181,6 +182,7 @@ export interface RelativeConfig {
   driverName: DriverNameConfig;
   teamName: { enabled: boolean };
   pitStatus: PitStatusConfig;
+  pushToPass: { enabled: boolean };
   driverTag: { enabled: boolean; widthPx?: number };
   displayOrder: string[];
   useLivePosition?: boolean;
@@ -203,11 +205,11 @@ export interface WeatherConfig {
 }
 
 export interface TrackMapConfig {
-  turnLabels: { 
-    enabled: boolean, 
-    labelType: 'names' | 'numbers' | 'both', 
-    highContrast: boolean,
-    labelFontSize: number,
+  turnLabels: {
+    enabled: boolean;
+    labelType: 'names' | 'numbers' | 'both';
+    highContrast: boolean;
+    labelFontSize: number;
   };
   showCarNumbers: boolean;
   displayMode?: 'carNumber' | 'sessionPosition' | 'livePosition';
