@@ -94,7 +94,6 @@ export const FlagDisplay = ({
   showLabel = true,
   textColor,
   matrixSize = 16,
-  fullBleed = false,
   enableGlow = true,
   backgroundOpacity = 100,
   compactMode = 'off',
@@ -103,7 +102,6 @@ export const FlagDisplay = ({
   showLabel?: boolean;
   textColor?: string;
   matrixSize?: number;
-  fullBleed?: boolean;
   enableGlow?: boolean;
   backgroundOpacity?: number;
   compactMode?: GeneralSettingsType['compactMode'];
@@ -134,7 +132,6 @@ export const FlagDisplay = ({
   } | null>(null);
 
   useLayoutEffect(() => {
-    if (fullBleed) return;
     const node = wrapRef.current;
     if (!node) return;
 
@@ -149,7 +146,7 @@ export const FlagDisplay = ({
     observer.observe(node);
 
     return () => observer.disconnect();
-  }, [aspect, fullBleed]);
+  }, [aspect]);
 
   useLayoutEffect(() => {
     const node = gridWrapRef.current;
@@ -246,23 +243,6 @@ export const FlagDisplay = ({
       </span>
     </div>
   );
-
-  if (fullBleed) {
-    return (
-      <div
-        className="flex flex-col items-stretch gap-0 bg-slate-900/(--bg-opacity) border-4 border-slate-800/(--bg-opacity) w-full h-full box-border m-0 p-0"
-        style={{ ...bgOpacityStyle, boxShadow: containerShadow }}
-      >
-        <div
-          ref={gridWrapRef}
-          className="flex-1 w-full flex items-center justify-center min-h-0"
-        >
-          {grid}
-        </div>
-        {label_el}
-      </div>
-    );
-  }
 
   const flagHeight = flagWidth ? Math.round(flagWidth / aspect) : null;
 
