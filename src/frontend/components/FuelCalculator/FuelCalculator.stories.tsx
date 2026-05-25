@@ -197,7 +197,7 @@ const MockFuelDataProvider = ({ children }: { children: React.ReactNode }) => {
     mockLaps.forEach((lap) => addLapData(lap));
 
     // Set current lap crossing state
-    updateLapCrossing(0.1, 35.5, 2700, 31, false);
+    updateLapCrossing(0.1, 35.5, 2700, 31);
   }, [addLapData, updateLapCrossing, clearAllData]);
 
   return <>{children}</>;
