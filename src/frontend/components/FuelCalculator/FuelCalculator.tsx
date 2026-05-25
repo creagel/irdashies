@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import {
   useSessionVisibility,
   useTelemetryValue,
@@ -113,11 +113,15 @@ export const FuelCalculator = (props: FuelCalculatorProps) => {
     (w) => w.id === 'fuel' || w.type === 'fuel'
   )?.config as Partial<FuelCalculatorSettings> | undefined;
 
-  const settings = {
-    ...defaultFuelCalculatorSettings,
-    ...dashboardConfig,
-    ...props,
-  } as FuelCalculatorSettings;
+  const settings = useMemo(
+    () =>
+      ({
+        ...defaultFuelCalculatorSettings,
+        ...dashboardConfig,
+        ...props,
+      }) as FuelCalculatorSettings,
+    [dashboardConfig, props]
+  );
 
   const { fuelUnits, safetyMargin } = settings;
 
@@ -130,7 +134,7 @@ export const FuelCalculator = (props: FuelCalculatorProps) => {
       ? (generalSettings?.compactMode ?? 'off')
       : 'off';
 
-  const derivedFontStyles = useMemo(() => {
+  const derivedFontStyles = (() => {
     if (!settings.useGeneralFontSize || !generalSettings?.fontSize) {
       return settings.widgetStyles || {};
     }
@@ -178,11 +182,7 @@ export const FuelCalculator = (props: FuelCalculatorProps) => {
         height?: number;
       }
     >;
-  }, [
-    settings.useGeneralFontSize,
-    settings.widgetStyles,
-    generalSettings?.fontSize,
-  ]);
+  })();
 
   const layoutTree: LayoutNode = useMemo(() => {
     // If we have a custom layout tree in settings, use it
@@ -211,24 +211,15 @@ export const FuelCalculator = (props: FuelCalculatorProps) => {
   // stable while live fuel level changes during refuelling.
   const [frozenFuelData, setFrozenFuelData] = useState(fuelData);
 
-  useEffect(() => {
-    if (fuelData) {
-      setFrozenFuelData((prev) => {
-        // Update snapshot if:
-        // 1. We don't have a previous snapshot
-        // 2. The current lap has changed
-        // 3. The last finished lap count has changed (crucial for catching the update after crossing the line)
-        if (
-          !prev ||
-          prev.currentLap !== fuelData.currentLap ||
-          prev.lastFinishedLap !== fuelData.lastFinishedLap
-        ) {
-          return fuelData;
-        }
-        return prev;
-      });
-    }
-  }, [fuelData]);
+  // Update snapshot only when the lap changes (avoids re-render cascade from useEffect).
+  if (
+    fuelData &&
+    (!frozenFuelData ||
+      frozenFuelData.currentLap !== fuelData.currentLap ||
+      frozenFuelData.lastFinishedLap !== fuelData.lastFinishedLap)
+  ) {
+    setFrozenFuelData(fuelData);
+  }
 
   // Frozen Display Data (for Grid)
   const frozenDisplayData = useMemo(() => {
@@ -251,14 +242,6 @@ export const FuelCalculator = (props: FuelCalculatorProps) => {
       maxQualify: qualifyConsumption,
     };
   }, [frozenFuelData, qualifyConsumption]);
-
-  const hasSettings = !!settings;
-
-  // Safety fallback
-  if (!hasSettings) return <div className="text-red-500">Missing Settings</div>;
-
-  if (!editMode && settings?.showOnlyWhenOnTrack && !isOnTrack) return null;
-  if (!editMode && !isSessionVisible) return <></>;
 
   const renderWidget = useCallback(
     (widgetId: string) => {
@@ -336,6 +319,15 @@ export const FuelCalculator = (props: FuelCalculatorProps) => {
       derivedCompactMode,
     ]
   );
+
+  const hasSettings = !!settings;
+
+  // Safety fallback
+  if (!hasSettings) return <div className="text-red-500">Missing Settings</div>;
+
+  if (!editMode && settings?.showOnlyWhenOnTrack && !isOnTrack) return null;
+  if (!editMode && !isSessionVisible) return <></>;
+
 
   const currentFuelStatus = displayData.fuelStatus || 'safe';
   const showFuelStatusBorder = settings.showFuelStatusBorder ?? true;
