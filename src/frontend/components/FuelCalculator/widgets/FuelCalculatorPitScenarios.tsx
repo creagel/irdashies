@@ -113,16 +113,14 @@ const TargetScenarioRow: React.FC<{
   );
 };
 
-export const FuelCalculatorPitScenarios: React.FC<
-  FuelCalculatorWidgetProps
-> = ({
+export const FuelCalculatorPitScenarios = React.memo(({
   fuelData,
   displayData,
   settings,
   widgetId,
   customStyles,
   compactMode,
-}) => {
+}: FuelCalculatorWidgetProps) => {
   // Custom style handling for separate label/value sizes
   const widgetStyle =
     customStyles || (widgetId && settings?.widgetStyles?.[widgetId]) || {};
@@ -306,4 +304,5 @@ export const FuelCalculatorPitScenarios: React.FC<
       </div>
     </div>
   );
-};
+});
+FuelCalculatorPitScenarios.displayName = 'FuelCalculatorPitScenarios';

@@ -22,13 +22,13 @@ interface FuelCalculatorWidgetProps {
   compactMode?: 'off' | 'compact' | 'ultra';
 }
 
-export const FuelHistory: React.FC<FuelCalculatorWidgetProps> = ({
+export const FuelHistory = React.memo(({
   settings,
   fuelUnits,
   widgetId,
   customStyles,
   compactMode = 'off',
-}) => {
+}: FuelCalculatorWidgetProps) => {
   // Custom style handling
   const widgetStyle = useMemo(
     () =>
@@ -107,4 +107,5 @@ export const FuelHistory: React.FC<FuelCalculatorWidgetProps> = ({
       />
     </div>
   );
-};
+});
+FuelHistory.displayName = 'FuelHistory';

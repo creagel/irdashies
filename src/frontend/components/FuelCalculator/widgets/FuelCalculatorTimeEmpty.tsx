@@ -17,14 +17,14 @@ interface FuelCalculatorWidgetProps {
   compactMode?: 'off' | 'compact' | 'ultra';
 }
 
-export const FuelCalculatorTimeEmpty: React.FC<FuelCalculatorWidgetProps> = ({
+export const FuelCalculatorTimeEmpty = React.memo(({
   fuelData,
   displayData,
   settings,
   widgetId,
   customStyles,
   compactMode,
-}) => {
+}: FuelCalculatorWidgetProps) => {
   // Custom style handling for separate label/value sizes
   const widgetStyle =
     customStyles || (widgetId && settings?.widgetStyles?.[widgetId]) || {};
@@ -79,4 +79,5 @@ export const FuelCalculatorTimeEmpty: React.FC<FuelCalculatorWidgetProps> = ({
       </div>
     </div>
   );
-};
+});
+FuelCalculatorTimeEmpty.displayName = 'FuelCalculatorTimeEmpty';

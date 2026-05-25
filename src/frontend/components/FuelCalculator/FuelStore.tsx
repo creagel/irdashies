@@ -21,8 +21,7 @@ interface FuelStoreState {
   lapStartFuel: number;
   /** Session time at lap crossing */
   lapCrossingTime: number;
-  /** Last lap distance percentage (to detect crossing) */
-  lastLapDistPct: number;
+  /** Last lap distance percentage (to detect crossing) — tracked via ref in useFuelCalculation */
   /** Current session number (to detect session changes) */
   sessionNum: number;
   /** Whether the car was on pit road at lap start */
@@ -54,18 +53,11 @@ interface FuelStoreActions {
    * Update lap crossing state
    */
   updateLapCrossing: (
-    lapDistPct: number,
     fuelLevel: number,
     sessionTime: number,
     currentLap: number,
     isOnPitRoad: boolean
   ) => void;
-
-
-  /**
-   * Update just the lap distance percentage (for tracking lap crossing)
-   */
-  updateLapDistPct: (lapDistPct: number) => void;
 
   /**
    * Clear all data (e.g., on session change)
@@ -128,7 +120,6 @@ export const useFuelStore = create<FuelStore>()(
       lastLap: 0,
       lapStartFuel: 0,
       lapCrossingTime: 0,
-      lastLapDistPct: 0,
       sessionNum: -1,
       wasOnPitRoad: false,
       lastSessionFlags: 0,
@@ -175,24 +166,18 @@ export const useFuelStore = create<FuelStore>()(
       },
 
       updateLapCrossing: (
-        lapDistPct: number,
         fuelLevel: number,
         sessionTime: number,
         currentLap: number,
         isOnPitRoad: boolean
       ) => {
         set({
-          lastLapDistPct: lapDistPct,
           lapStartFuel: fuelLevel,
           lapCrossingTime: sessionTime,
           lastLap: currentLap,
           wasOnPitRoad: isOnPitRoad,
-          accumulatedRefuel: 0, // Reset accumulated refuel for the new lap
+          accumulatedRefuel: 0,
         });
-      },
-
-      updateLapDistPct: (lapDistPct: number) => {
-        set({ lastLapDistPct: lapDistPct });
       },
 
       clearAllData: () => {
@@ -203,7 +188,6 @@ export const useFuelStore = create<FuelStore>()(
           lastLap: 0,
           lapStartFuel: 0,
           lapCrossingTime: 0,
-          lastLapDistPct: 0,
           wasOnPitRoad: false,
           lastSessionFlags: 0,
           accumulatedRefuel: 0,
@@ -330,19 +314,3 @@ export const selectLastLapUsage = (state: FuelStore): number => {
  */
 export const selectLastLap = (state: FuelStore): number => state.lastLap;
 
-/**
- * Selector to get lap crossing state for detection logic
- */
-export const selectLapCrossingState = (
-  state: FuelStore
-): {
-  lastLapDistPct: number;
-  lapStartFuel: number;
-  lapCrossingTime: number;
-  wasOnPitRoad: boolean;
-} => ({
-  lastLapDistPct: state.lastLapDistPct,
-  lapStartFuel: state.lapStartFuel,
-  lapCrossingTime: state.lapCrossingTime,
-  wasOnPitRoad: state.wasOnPitRoad,
-});

@@ -18,13 +18,13 @@ export interface FuelCalculatorWidgetProps {
   compactMode?: 'off' | 'compact' | 'ultra';
 }
 
-export const FuelCalculatorConfidence: React.FC<FuelCalculatorWidgetProps> = ({
+export const FuelCalculatorConfidence = React.memo(({
   fuelData,
   settings,
   widgetId,
   customStyles,
   compactMode,
-}) => {
+}: FuelCalculatorWidgetProps) => {
   if (!fuelData) return null;
 
   const confidence = fuelData.confidence || 'low';
@@ -109,4 +109,5 @@ export const FuelCalculatorConfidence: React.FC<FuelCalculatorWidgetProps> = ({
       </div>
     </div>
   );
-};
+});
+FuelCalculatorConfidence.displayName = 'FuelCalculatorConfidence';

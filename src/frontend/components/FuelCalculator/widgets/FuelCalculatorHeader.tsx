@@ -48,13 +48,13 @@ const getConfidenceConfig = (confidence: string) => {
   }
 };
 
-export const FuelCalculatorHeader: React.FC<FuelCalculatorWidgetProps> = ({
+export const FuelCalculatorHeader = React.memo(({
   fuelData,
   settings,
   widgetId,
   customStyles,
   compactMode = 'off',
-}) => {
+}: FuelCalculatorWidgetProps) => {
   // Custom style handling for separate label/value sizes
   const widgetStyle =
     customStyles || (widgetId && settings?.widgetStyles?.[widgetId]) || {};
@@ -147,4 +147,5 @@ export const FuelCalculatorHeader: React.FC<FuelCalculatorWidgetProps> = ({
       </div>
     </div>
   );
-};
+});
+FuelCalculatorHeader.displayName = 'FuelCalculatorHeader';

@@ -16,16 +16,14 @@ interface FuelCalculatorWidgetProps {
   compactMode?: 'off' | 'compact' | 'ultra';
 }
 
-export const FuelCalculatorEconomyPredict: React.FC<
-  FuelCalculatorWidgetProps
-> = ({
+export const FuelCalculatorEconomyPredict = React.memo(({
   fuelData,
   displayData,
   settings,
   widgetId,
   customStyles,
   compactMode,
-}) => {
+}: FuelCalculatorWidgetProps) => {
   // Custom style handling for separate label/value sizes
   const widgetStyle =
     customStyles || (widgetId && settings?.widgetStyles?.[widgetId]) || {};
@@ -100,4 +98,5 @@ export const FuelCalculatorEconomyPredict: React.FC<
       })}
     </div>
   );
-};
+});
+FuelCalculatorEconomyPredict.displayName = 'FuelCalculatorEconomyPredict';

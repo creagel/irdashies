@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import {
   useSessionVisibility,
   useTelemetryValue,
@@ -24,6 +24,58 @@ import {
 } from './defaults';
 
 type FuelCalculatorProps = Partial<FuelCalculatorSettings>;
+
+interface RecursiveWidgetRendererProps {
+  node: LayoutNode;
+  renderWidget: (id: string) => React.ReactNode;
+}
+
+// Defined outside FuelCalculator so React never sees it as a new component type on re-render
+const RecursiveWidgetRenderer: React.FC<RecursiveWidgetRendererProps> = ({
+  node,
+  renderWidget,
+}) => {
+  if (!node || !node.type) return null;
+  if (node.type === 'box') {
+    const isHorizontalBox = node.direction === 'row';
+    return (
+      <div
+        className="flex-1 flex flex-col w-full"
+        style={{ flexGrow: node.weight || 1 }}
+      >
+        <div
+          className={`flex flex-1 ${isHorizontalBox ? 'flex-row items-center justify-around' : 'flex-col'} w-full`}
+        >
+          {Array.from(new Set(node.widgets || [])).map((widgetId) => (
+            <div
+              key={widgetId}
+              data-widget-id={widgetId}
+              className="flex-1 min-w-0 flex flex-col w-full"
+            >
+              {renderWidget(widgetId)}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  if (node.type === 'split') {
+    return (
+      <div
+        className={`flex flex-1 gap-1 ${node.direction === 'row' ? 'flex-row items-center' : 'flex-col'} h-full`}
+      >
+        {node.children?.map((child: LayoutNode) => (
+          <RecursiveWidgetRenderer
+            key={child.id}
+            node={child}
+            renderWidget={renderWidget}
+          />
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
 
 const EMPTY_DATA: FuelCalculation = {
   fuelLevel: 0,
@@ -149,15 +201,10 @@ export const FuelCalculator = (props: FuelCalculatorProps) => {
 
   const fuelData = useFuelCalculation(safetyMargin, settings);
 
-  const currentFuelLevel = useTelemetryValue('FuelLevel');
-
   const predictiveUsage = fuelData?.projectedLapUsage || 0;
   const qualifyConsumption = fuelData?.maxQualify || null;
 
-  const displayData = useMemo(() => {
-    if (!fuelData) return EMPTY_DATA;
-    return fuelData;
-  }, [fuelData]);
+  const displayData = fuelData ?? EMPTY_DATA;
 
   // Frozen snapshot of fuel data, updated only on lap changes.
   // Used by grid/scenarios/target widgets so pit-entry numbers stay
@@ -213,109 +260,82 @@ export const FuelCalculator = (props: FuelCalculatorProps) => {
   if (!editMode && settings?.showOnlyWhenOnTrack && !isOnTrack) return null;
   if (!editMode && !isSessionVisible) return <></>;
 
-  const renderWidget = (widgetId: string) => {
-    const widgetStyles = derivedFontStyles[widgetId] || derivedFontStyles; // Proxy or direct
-    const widgetProps = {
-      widgetId: widgetId,
-      fuelData: fuelData,
-      displayData: displayData,
-      fuelUnits: fuelUnits,
-      settings: settings,
-      customStyles: widgetStyles,
-      compactMode: derivedCompactMode,
-    };
+  const renderWidget = useCallback(
+    (widgetId: string) => {
+      const widgetStyles = derivedFontStyles[widgetId] || derivedFontStyles;
+      const widgetProps = {
+        widgetId,
+        fuelData,
+        displayData,
+        fuelUnits,
+        settings,
+        customStyles: widgetStyles,
+        compactMode: derivedCompactMode,
+      };
 
-    switch (widgetId) {
-      case 'fuelHeader':
-        return <FuelCalculatorHeader {...widgetProps} />;
-      case 'fuelGauge':
-        return <FuelCalculatorGauge {...widgetProps} />;
-      case 'fuelGrid':
-        return (
-          <FuelCalculatorConsumptionGrid
-            {...widgetProps}
-            fuelData={frozenFuelData}
-            liveFuelData={fuelData}
-            liveFuelLevel={currentFuelLevel}
-            predictiveUsage={predictiveUsage}
-            displayData={frozenDisplayData}
-          />
-        );
-      case 'fuelScenarios':
-        return (
-          <FuelCalculatorPitScenarios
-            {...widgetProps}
-            fuelData={frozenFuelData}
-            displayData={frozenDisplayData}
-          />
-        );
-      case 'fuelTimeEmpty':
-        return <FuelCalculatorTimeEmpty {...widgetProps} />;
-      case 'fuelGraph':
-      case 'historyGraph':
-        return <FuelHistory {...widgetProps} />;
-      case 'fuelTargetMessage':
-        return (
-          <FuelCalculatorTargetMessage
-            {...widgetProps}
-            fuelData={frozenFuelData}
-            displayData={frozenDisplayData}
-          />
-        );
-      case 'fuelConfidence':
-        return <FuelCalculatorConfidence {...widgetProps} />;
-
-      case 'fuelEconomyPredict':
-        return (
-          <FuelCalculatorEconomyPredict
-            {...widgetProps}
-            fuelData={frozenFuelData}
-            displayData={displayData}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
-  const RecursiveWidgetRenderer = ({ node }: { node: LayoutNode }) => {
-    if (!node || !node.type) return null;
-    if (node.type === 'box') {
-      const isHorizontalBox = node.direction === 'row';
-      return (
-        <div
-          className="flex-1 flex flex-col w-full"
-          style={{ flexGrow: node.weight || 1 }}
-        >
-          <div
-            className={`flex flex-1 ${isHorizontalBox ? 'flex-row items-center justify-around' : 'flex-col'} w-full`}
-          >
-            {Array.from(new Set(node.widgets || [])).map((widgetId) => (
-              <div
-                key={widgetId}
-                data-widget-id={widgetId}
-                className="flex-1 min-w-0 flex flex-col w-full"
-              >
-                {renderWidget(widgetId)}
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (node.type === 'split') {
-      return (
-        <div
-          className={`flex flex-1 gap-1 ${node.direction === 'row' ? 'flex-row items-center' : 'flex-col'} h-full`}
-        >
-          {node.children?.map((child: LayoutNode) => (
-            <RecursiveWidgetRenderer key={child.id} node={child} />
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
+      switch (widgetId) {
+        case 'fuelHeader':
+          return <FuelCalculatorHeader {...widgetProps} />;
+        case 'fuelGauge':
+          return <FuelCalculatorGauge {...widgetProps} />;
+        case 'fuelGrid':
+          return (
+            <FuelCalculatorConsumptionGrid
+              {...widgetProps}
+              fuelData={frozenFuelData}
+              liveFuelData={fuelData}
+              liveFuelLevel={fuelData?.fuelLevel}
+              predictiveUsage={predictiveUsage}
+              displayData={frozenDisplayData}
+            />
+          );
+        case 'fuelScenarios':
+          return (
+            <FuelCalculatorPitScenarios
+              {...widgetProps}
+              fuelData={frozenFuelData}
+              displayData={frozenDisplayData}
+            />
+          );
+        case 'fuelTimeEmpty':
+          return <FuelCalculatorTimeEmpty {...widgetProps} />;
+        case 'fuelGraph':
+        case 'historyGraph':
+          return <FuelHistory {...widgetProps} />;
+        case 'fuelTargetMessage':
+          return (
+            <FuelCalculatorTargetMessage
+              {...widgetProps}
+              fuelData={frozenFuelData}
+              displayData={frozenDisplayData}
+            />
+          );
+        case 'fuelConfidence':
+          return <FuelCalculatorConfidence {...widgetProps} />;
+        case 'fuelEconomyPredict':
+          return (
+            <FuelCalculatorEconomyPredict
+              {...widgetProps}
+              fuelData={frozenFuelData}
+              displayData={displayData}
+            />
+          );
+        default:
+          return null;
+      }
+    },
+    [
+      fuelData,
+      displayData,
+      frozenFuelData,
+      frozenDisplayData,
+      predictiveUsage,
+      fuelUnits,
+      settings,
+      derivedFontStyles,
+      derivedCompactMode,
+    ]
+  );
 
   const currentFuelStatus = displayData.fuelStatus || 'safe';
   const showFuelStatusBorder = settings.showFuelStatusBorder ?? true;
@@ -354,7 +374,7 @@ export const FuelCalculator = (props: FuelCalculatorProps) => {
       }}
     >
       {layoutTree ? (
-        <RecursiveWidgetRenderer node={layoutTree} />
+        <RecursiveWidgetRenderer node={layoutTree} renderWidget={renderWidget} />
       ) : (
         <div className="text-red-500">Layout Error</div>
       )}

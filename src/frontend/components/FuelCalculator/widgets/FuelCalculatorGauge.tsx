@@ -56,7 +56,7 @@ export const getFuelStatusColors = (
   }
 };
 
-export const FuelCalculatorGauge: React.FC<FuelCalculatorWidgetProps> = ({
+export const FuelCalculatorGauge = React.memo(({
   fuelData,
   displayData,
   fuelUnits,
@@ -64,7 +64,7 @@ export const FuelCalculatorGauge: React.FC<FuelCalculatorWidgetProps> = ({
   widgetId,
   customStyles,
   compactMode = 'off',
-}) => {
+}: FuelCalculatorWidgetProps) => {
   // Custom style handling for separate label/value sizes
   const widgetStyle =
     customStyles || (widgetId && settings?.widgetStyles?.[widgetId]) || {};
@@ -132,4 +132,5 @@ export const FuelCalculatorGauge: React.FC<FuelCalculatorWidgetProps> = ({
       </div>
     </div>
   );
-};
+});
+FuelCalculatorGauge.displayName = 'FuelCalculatorGauge';

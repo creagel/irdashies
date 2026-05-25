@@ -26,9 +26,7 @@ interface FuelCalculatorWidgetProps {
   compactMode?: 'off' | 'compact' | 'ultra';
 }
 
-export const FuelCalculatorConsumptionGrid: React.FC<
-  FuelCalculatorWidgetProps
-> = ({
+export const FuelCalculatorConsumptionGrid = React.memo(({
   fuelData,
   displayData,
   settings,
@@ -38,7 +36,7 @@ export const FuelCalculatorConsumptionGrid: React.FC<
   predictiveUsage,
   liveFuelData,
   liveFuelLevel,
-}) => {
+}: FuelCalculatorWidgetProps) => {
   // Check if we are in a testing/practice session
   // We need the current SessionNum to look up the SessionType in the SessionInfo array
   const sessionNum = useTelemetryValue('SessionNum');
@@ -571,4 +569,5 @@ export const FuelCalculatorConsumptionGrid: React.FC<
       })()}
     </div>
   );
-};
+});
+FuelCalculatorConsumptionGrid.displayName = 'FuelCalculatorConsumptionGrid';
