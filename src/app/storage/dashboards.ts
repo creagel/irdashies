@@ -11,6 +11,7 @@ import { resolve, basename, sep } from 'node:path';
 import { app } from 'electron';
 import { randomUUID, createHash } from 'node:crypto';
 import logger from '../logger';
+import { migrateLegacyStreamChat } from './streamChatMigration';
 
 const DASHBOARDS_KEY = 'dashboards';
 const PROFILES_KEY = 'profiles';
@@ -108,7 +109,8 @@ export const getOrCreateDefaultDashboard = () => {
 };
 
 export const getOrCreateDefaultDashboardForProfile = (profileId: string) => {
-  const dashboard = getDashboard(profileId);
+  const savedDashboard = getDashboard(profileId);
+  const dashboard = savedDashboard && migrateLegacyStreamChat(savedDashboard);
 
   if (dashboard) {
     // check missing widgets
